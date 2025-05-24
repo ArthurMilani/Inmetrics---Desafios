@@ -1,0 +1,36 @@
+from app import app
+import jwt
+from config import mysql
+from flask import jsonify, request
+from address import address_bp
+from client import client_bp
+
+
+#Blueprint with endponts
+app.register_blueprint(address_bp)
+app.register_blueprint(client_bp)
+
+#Validate the Bearer Token
+@app.before_request
+def validate_token():
+    
+    _auth_header = request.headers.get('Authorization', None)
+    
+    if not _auth_header or not _auth_header.startswith("Bearer "):
+        return jsonify({"msg": "Empty or not valid header"}), 401
+
+    token = _auth_header.split(" ")[1]
+    try:
+        jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256']) #Token validation returns exception when it fails
+    except jwt.InvalidTokenError as e:
+        print("Error validating token: ", e)
+        return jsonify({"msg": "Invalid or expired token. Please, log in again"}), 401
+    except Exception as e:
+        print("Error:", e)
+        return jsonify({"msg": "Internal Server Error"}), 500
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
+
