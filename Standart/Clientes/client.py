@@ -8,7 +8,7 @@ from flask import flash, request, Blueprint
 
 client_bp = Blueprint("client", __name__)
 INVENTORY_API_URL = "http://localhost:5002/inventory"
-ACCESS_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IkFydGh1ciIsImV4cCI6MTc0ODA4MzI0MH0.lm4zudm10MZd39mXskZ-6TD0arGqZf3LpO2D5eF7i4M"
+ACCESS_TOKEN = "660265208787165882538350202289784386562"
 
 
 #Create a client
@@ -114,19 +114,18 @@ def validate_cpf(_cpf):
 def fetch(id):
     con = cur = None
     try:
-        if id:
-            con = mysql.connect()
-            cur = con.cursor(pymysql.cursors.DictCursor)
-            sqlQuery = "SELECT * FROM clients WHERE id = %s"
-            cur.execute(sqlQuery, (id,))
-            rows = cur.fetchone()
+        con = mysql.connect()
+        cur = con.cursor(pymysql.cursors.DictCursor)
+        sqlQuery = "SELECT * FROM clients WHERE id = %s"
+        cur.execute(sqlQuery, (id,))
+        rows = cur.fetchone()
 
-            if rows is None:
-                return jsonify({'msg': 'client not found'}), 404
+        if rows is None:
+            return jsonify({'msg': 'client not found'}), 404
             
-            response = jsonify(rows)
-            response.status_code = 200
-            return response
+        response = jsonify(rows)
+        response.status_code = 200
+        return response
 
     except Exception as e:
         print("Error: ", e)
@@ -165,16 +164,15 @@ def fetch_all():
 def delete(id):
     con = cur = None
     try:
-        if id:
-            con = mysql.connect()
-            cur = con.cursor()
-            sqlQuery = "DELETE FROM clients WHERE id = %s"
-            cur.execute(sqlQuery, (id,))
-            con.commit()
-            update_inventory(id)
-            response = jsonify({"msg":"Success deleting the client"})
-            response.status_code = 200
-            return response
+        con = mysql.connect()
+        cur = con.cursor()
+        sqlQuery = "DELETE FROM clients WHERE id = %s"
+        cur.execute(sqlQuery, (id,))
+        con.commit()
+        update_inventory(id)
+        response = jsonify({"msg":"Success deleting the client"})
+        response.status_code = 200
+        return response
 
     except RuntimeError as e:
         print("RuntimeError: ", e)
@@ -209,18 +207,17 @@ def update_inventory(id):
 def client_exists(id):
     con = cur = None
     try:
-        if id:
-            con = mysql.connect()
-            cur = con.cursor(pymysql.cursors.DictCursor)
-            sqlQuery = "SELECT name FROM clients WHERE id = %s"
-            cur.execute(sqlQuery, (id,))
-            name = cur.fetchone()
-            if name:
-                response = jsonify({"status":True})
-            else:
-                response = jsonify({"status":False})
-            response.status_code = 200
-            return response
+        con = mysql.connect()
+        cur = con.cursor(pymysql.cursors.DictCursor)
+        sqlQuery = "SELECT name FROM clients WHERE id = %s"
+        cur.execute(sqlQuery, (id,))
+        name = cur.fetchone()
+        if name:
+            response = jsonify({"status":True})
+        else:
+            response = jsonify({"status":False})
+        response.status_code = 200
+        return response
 
     except Exception as e:
         print("Error: ", e)

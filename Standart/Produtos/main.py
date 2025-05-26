@@ -18,6 +18,11 @@ def validate_token():
         return jsonify({"msg": "Empty or not valid header"}), 401
 
     token = _auth_header.split(" ")[1]
+
+    #Apenas os microserviços tem essa senha
+    if token == "660265208787165882538350202289784386562":
+        return
+
     try:
         jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256']) #Token validation returns exception when it fails
     except jwt.InvalidTokenError as e:

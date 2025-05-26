@@ -155,15 +155,14 @@ def fetch_all(client_id):
 def delete(id):
     con = cur = None
     try:
-        if id:
-            con = mysql.connect()
-            cur = con.cursor(pymysql.cursors.DictCursor)
-            sqlQuery = "DELETE FROM address WHERE id = %s"
-            cur.execute(sqlQuery, (id,))
-            con.commit()
-            response = jsonify("Success")
-            response.status_code = 200
-            return response
+        con = mysql.connect()
+        cur = con.cursor(pymysql.cursors.DictCursor)
+        sqlQuery = "DELETE FROM address WHERE id = %s"
+        cur.execute(sqlQuery, (id,))
+        con.commit()
+        response = jsonify("Success")
+        response.status_code = 200
+        return response
         
     except Exception as e:
         print("Error: ", e)

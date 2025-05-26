@@ -7,7 +7,7 @@ from flask import flash, request, Blueprint
 
 products_bp = Blueprint("products", __name__)
 INVENTORY_API_URL = "http://localhost:5002/inventory"
-ACCESS_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IkFydGh1ciIsImV4cCI6MTc0ODAyODUxNX0.a4mdcgZDFpF7N72xj9UMjY_5lV2gaYQcbflAffX83qI"
+ACCESS_TOKEN = "660265208787165882538350202289784386562"
 
 
 #Create one product
@@ -96,19 +96,18 @@ def update(id):
 def fetch(id):
     con = cur = None
     try:
-        if id:
-            con = mysql.connect()
-            cur = con.cursor(pymysql.cursors.DictCursor)
-            sqlQuery = "SELECT * FROM products WHERE id = %s"
-            cur.execute(sqlQuery, (id,))
-            row = cur.fetchone()
+        con = mysql.connect()
+        cur = con.cursor(pymysql.cursors.DictCursor)
+        sqlQuery = "SELECT * FROM products WHERE id = %s"
+        cur.execute(sqlQuery, (id,))
+        row = cur.fetchone()
 
-            if not row:
-                return jsonify({"msg": "Product not found"}), 404
+        if not row:
+            return jsonify({"msg": "Product not found"}), 404
                
-            response = jsonify(row)
-            response.status_code = 200
-            return response
+        response = jsonify(row)
+        response.status_code = 200
+        return response
 
 
     except Exception as e:
@@ -148,16 +147,15 @@ def fetch_all():
 def delete(id):
     con = cur = None
     try:
-        if id:
-            con = mysql.connect()
-            cur = con.cursor(pymysql.cursors.DictCursor)
-            sqlQuery = "DELETE FROM products WHERE id = %s"
-            cur.execute(sqlQuery, (id,))
-            con.commit()
-            update_inventories(id)
-            response = jsonify({"msg":"Success deleting the product"})
-            response.status_code = 200
-            return response
+        con = mysql.connect()
+        cur = con.cursor(pymysql.cursors.DictCursor)
+        sqlQuery = "DELETE FROM products WHERE id = %s"
+        cur.execute(sqlQuery, (id,))
+        con.commit()
+        update_inventories(id)
+        response = jsonify({"msg":"Success deleting the product"})
+        response.status_code = 200
+        return response
         
     except RuntimeError as e:
         print("RuntimeError: ", e)
@@ -192,18 +190,17 @@ def update_inventories(id):
 def product_exists(id):
     con = cur = None
     try:
-        if id:
-            con = mysql.connect()
-            cur = con.cursor(pymysql.cursors.DictCursor)
-            sqlQuery = "SELECT name FROM products WHERE id = %s"
-            cur.execute(sqlQuery, (id,))
-            name = cur.fetchone()
-            if name:
-                response = jsonify({"status": True, "product_name": name['name']})
-            else:
-                response = jsonify({"status": False})
-            response.status_code = 200
-            return response
+        con = mysql.connect()
+        cur = con.cursor(pymysql.cursors.DictCursor)
+        sqlQuery = "SELECT name FROM products WHERE id = %s"
+        cur.execute(sqlQuery, (id,))
+        name = cur.fetchone()
+        if name:
+            response = jsonify({"status": True, "product_name": name['name']})
+        else:
+            response = jsonify({"status": False})
+        response.status_code = 200
+        return response
 
     except Exception as e:
         print("Error: ", e)

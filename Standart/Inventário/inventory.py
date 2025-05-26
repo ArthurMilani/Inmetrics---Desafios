@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 inventory_bp = Blueprint("inventory", __name__)
 CLIENTS_API_URL = "http://localhost:5000/clients"
 PRODUCTS_API_URL = "http://localhost:5001/products"
-ACCESS_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IkFydGh1ciIsImV4cCI6MTc0NzkxNDY3OH0.arHT9ZZLLVBXOyOIPP8GivKxvo2cOUAVgUpJB5H1D10"
+ACCESS_TOKEN = "660265208787165882538350202289784386562"
 
 
 #Create a relation between a product and a client
@@ -96,16 +96,15 @@ def verify_product_id(_product_id):
 def list_products_id(client_id):
     con = cur = None
     try:
-        if client_id:
-            con = mysql.connect()
-            cur = con.cursor(pymysql.cursors.DictCursor)
-            sqlQuery = "SELECT id, purchase_date, product_id, product_name, number_of_items FROM client_products WHERE client_id = %s"
-            cur.execute(sqlQuery, (client_id))
-            con.commit()
-            product_ids = cur.fetchall()
-            response = jsonify(product_ids)
-            response.status_code = 200
-            return response
+        con = mysql.connect()
+        cur = con.cursor(pymysql.cursors.DictCursor)
+        sqlQuery = "SELECT id, purchase_date, product_id, product_name, number_of_items FROM client_products WHERE client_id = %s"
+        cur.execute(sqlQuery, (client_id))
+        con.commit()
+        product_ids = cur.fetchall()
+        response = jsonify(product_ids)
+        response.status_code = 200
+        return response
     except Exception as e:
         print("Error: ", e)
         return jsonify({"msg": "Error fetching the products of this client"}), 500
@@ -119,15 +118,14 @@ def list_products_id(client_id):
 def remove_product(id):
     con = cur = None
     try:
-        if id:
-            con = mysql.connect()
-            cur = con.cursor()
-            sqlQuery = "DELETE FROM client_products WHERE id = %s"
-            cur.execute(sqlQuery, (id,))
-            con.commit()
-            response = jsonify({"msg":"Success removing the product from your inventory"})
-            response.status_code = 200
-            return response
+        con = mysql.connect()
+        cur = con.cursor()
+        sqlQuery = "DELETE FROM client_products WHERE id = %s"
+        cur.execute(sqlQuery, (id,))
+        con.commit()
+        response = jsonify({"msg":"Success removing the product from your inventory"})
+        response.status_code = 200
+        return response
         
     except Exception as e:
         print("Error: ", e)
