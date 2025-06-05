@@ -6,13 +6,13 @@ from config import mysql
 from flask import jsonify
 from flask import flash, request, Blueprint
 
-client_bp = Blueprint("client", __name__)
+clients_bp = Blueprint("clients", __name__)
 INVENTORY_API_URL = "http://localhost:5002/inventory"
 ACCESS_TOKEN = "660265208787165882538350202289784386562"
 
 
 #Create a client
-@client_bp.route('/clients/create', methods=['POST'])
+@clients_bp.route('/clients/create', methods=['POST'])
 def create():
     con = cur = None
     try:
@@ -56,7 +56,7 @@ def create():
 
 
 #Update a client data
-@client_bp.route("/clients/update/<int:id>", methods=['PUT'])
+@clients_bp.route("/clients/update/<int:id>", methods=['PUT'])
 def update(id):
     con = cur = None
     try:
@@ -110,7 +110,7 @@ def validate_cpf(_cpf):
 
 
 #Fetch a client by its id
-@client_bp.route("/clients/fetch/<int:id>")
+@clients_bp.route("/clients/fetch/<int:id>")
 def fetch(id):
     con = cur = None
     try:
@@ -137,7 +137,7 @@ def fetch(id):
 
 
 #Fetch all clients
-@client_bp.route("/clients/fetch")
+@clients_bp.route("/clients/fetch")
 def fetch_all():
     con = cur = None
     try:
@@ -160,7 +160,7 @@ def fetch_all():
 
 
 #Delete a specific client
-@client_bp.route("/clients/delete/<int:id>", methods=['DELETE'])
+@clients_bp.route("/clients/delete/<int:id>", methods=['DELETE'])
 def delete(id):
     con = cur = None
     try:
@@ -203,7 +203,7 @@ def update_inventory(id):
 
 
 #Verify if a client exists
-@client_bp.route('/clients/exists/<int:id>')
+@clients_bp.route('/clients/exists/<int:id>')
 def client_exists(id):
     con = cur = None
     try:
@@ -226,3 +226,12 @@ def client_exists(id):
     finally:
         if cur: cur.close()
         if con: con.close()
+
+
+#Cheack service health
+@clients_bp.route('/clients/health', methods=['GET'])
+def health():
+    try:
+        return jsonify({"msg": "Client service is running"}), 200
+    except Exception as e:
+        return jsonify({"msg": "Internal Server Error"}), 500

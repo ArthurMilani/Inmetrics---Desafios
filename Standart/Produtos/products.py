@@ -209,3 +209,12 @@ def product_exists(id):
     finally:
         if cur: cur.close()
         if con: con.close()
+
+
+#Cheack service health
+@products_bp.route('/products/health', methods=['GET'])
+def health():
+    try:
+        return jsonify({"msg": "Product service is running"}), 200
+    except Exception as e:
+        return jsonify({"msg": "Internal Server Error"}), 500

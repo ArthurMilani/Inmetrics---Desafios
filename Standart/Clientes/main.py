@@ -3,16 +3,19 @@ import jwt
 from config import mysql
 from flask import jsonify, request
 from address import address_bp
-from client import client_bp
+from client import clients_bp
 
 
 #Blueprint with endponts
 app.register_blueprint(address_bp)
-app.register_blueprint(client_bp)
+app.register_blueprint(clients_bp)
 
 #Validate the Bearer Token
 @app.before_request
 def validate_token():
+
+    if request.endpoint == 'clients.health': #The health endpoint does not require authentication
+        return
     
     _auth_header = request.headers.get('Authorization', None)
     
@@ -36,6 +39,6 @@ def validate_token():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host='0.0.0.0', debug=True)
 
 

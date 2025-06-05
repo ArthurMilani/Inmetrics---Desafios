@@ -12,6 +12,9 @@ app.register_blueprint(inventory_bp)
 @app.before_request
 def validate_token():
     
+    if request.endpoint == 'inventory.health': #The health endpoint does not require authentication
+        return
+
     _auth_header = request.headers.get('Authorization', None)
     
     if not _auth_header or not _auth_header.startswith("Bearer "):
@@ -34,6 +37,6 @@ def validate_token():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5002)
+    app.run(host='0.0.0.0', debug=True, port=5002)
 
 

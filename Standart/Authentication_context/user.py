@@ -69,6 +69,16 @@ def create():
         con.close()
         cur.close()
 
+
+#Cheack service health
+@user_bp.route('/user/health', methods=['GET'])
+def health():
+    try:
+        return jsonify({"msg": "User service is running"}), 200
+    except Exception as e:
+        return jsonify({"msg": "Internal Server Error"}), 500
+
+
 #Get user by username from database
 def get_user(username):
     con = cur = None
