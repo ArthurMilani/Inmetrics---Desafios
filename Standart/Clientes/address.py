@@ -22,12 +22,15 @@ def create():
         _cep = _json['CEP']
 
         if not isinstance(_client_id, int) or not isinstance(_state, str) or not isinstance(_city, str) or not isinstance(_street, str) or not isinstance(_number, int) or not isinstance(_cep, str):
+            print("Invalid data types")
             return jsonify({'msg': 'Invalid data types'}), 400
         
         if not validate_cep(_cep):
+            print(f"Invalid CEP format: {_cep}")
             return jsonify({'msg': 'Invalid CEP format'}), 400
         
         if len(_state) != 2:
+            print("Invalid state")
             return jsonify({'msg': 'Invalid state'}), 400
 
         con = mysql.connect()
