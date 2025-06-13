@@ -34,11 +34,6 @@ NEGATIVE - Atualização de endereço com dados inválidos
     QUANDO ele faz a requisição de atualizar o endereço com dados inválidos
     ENTÃO o sistema deve retornar erro de dados inválidos
 
-# NEGATIVE - Atualização de endereço com ID de cliente inexistente
-#     DADO que o usuário possui um token de autenticação válido
-#     QUANDO ele faz a requisição de atualizar o endereço com ID de cliente inexistente
-#     ENTÃO o sistema deve retornar erro de cliente não encontrado
-
 
 # Busca de Endereço
 POSITIVE - Busca de endereço com sucesso
@@ -51,12 +46,6 @@ POSITIVE - Busca de todos endereços
     DADO que o usuário possui um token de autenticação válido
     QUANDO ele faz a requisição de buscar todos os endereços no sistema
     ENTÃO o sistema deve retornar os dados dos endereços com sucesso
-
-
-# NEGATIVE - Busca de endereço de cliente inexistente
-#     DADO que o usuário possui um token de autenticação válido
-#     QUANDO ele faz a requisição de buscar endereços de um cliente inexistente
-#     ENTÃO o sistema deve retornar erro de cliente não encontrado
 
 
 # Deleção de Endereço

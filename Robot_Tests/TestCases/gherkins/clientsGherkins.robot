@@ -35,10 +35,10 @@ NEGATIVE - Atualização de cliente com dados inválidos
     QUANDO ele faz a requisição de atualizar o cliente com dados inválidos
     ENTÃO o sistema deve retornar erro de dados inválidos
 
-# NEGATIVE - Atualização de cliente com dados repetidos
-#     DADO que o usuário possui um token de autenticação válido
-#     QUANDO ele faz a requisição de atualizar o cliente com dados repetidos
-#     ENTÃO o sistema deve retornar erro de dados repetidos
+NEGATIVE - Atualização de cliente com dados repetidos
+    DADO que o usuário possui um token de autenticação válido
+    QUANDO ele faz a requisição de atualizar o cliente com dados repetidos
+    ENTÃO o sistema deve retornar erro de dados repetidos
 
 #Busca de Cliente
 POSITIVE - Busca de cliente com sucesso
@@ -64,5 +64,13 @@ POSITIVE - Deleção de cliente com sucesso
 
 
 #Verificar se Cliente Existe
+POSITIVE - Verificar se cliente existe
+    DADO que o usuário possui um token de autenticação válido
+    QUANDO ele faz a requisição de verificar se um cliente existe com ID existente
+    ENTÃO o sistema deve retornar True e sucesso
 
+POSITIVE - Verificar se cliente não existe
+    DADO que o usuário possui um token de autenticação válido
+    QUANDO ele faz a requisição de verificar se um cliente existe com ID inexistente
+    ENTÃO o sistema deve retornar False e sucesso
 

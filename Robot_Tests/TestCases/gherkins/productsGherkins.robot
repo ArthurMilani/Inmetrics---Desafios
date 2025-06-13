@@ -38,10 +38,10 @@ NEGATIVE - Atualizar produto com dados inválidos
     ENTÃO o sistema deve retornar erro de dados inválidos
 
 
-# NEGATIVE - Atualizar produto com dados repetidos
-#     DADO que o usuário possui um token de autenticação válido
-#     QUANDO ele faz a requisição de atualizar o produto com dados repetidos
-#     ENTÃO o sistema deve retornar erro de dados repetidos
+NEGATIVE - Atualizar produto com dados repetidos
+    DADO que o usuário possui um token de autenticação válido
+    QUANDO ele faz a requisição de atualizar o produto com dados repetidos
+    ENTÃO o sistema deve retornar erro de dados repetidos
 
 # Busca de Produto
 POSITIVE - Buscar produto com sucesso
@@ -66,3 +66,14 @@ POSITIVE - Deletar produto com sucesso
     DADO que o usuário possui um token de autenticação válido
     QUANDO ele faz a requisição de deletar um produto existente no sistema
     ENTÃO o sistema deve deletar o produto do banco de dados e retornar sucesso
+
+#Verificar se produto existe
+POSITIVE - Verificar se produto existe
+    DADO que o usuário possui um token de autenticação válido
+    QUANDO ele faz a requisição de verificar se um produto existe com ID existente
+    ENTÃO o sistema deve retornar True e sucesso
+
+POSITIVE - Verificar se produto não existe
+    DADO que o usuário possui um token de autenticação válido
+    QUANDO ele faz a requisição de verificar se um produto existe com ID inexistente
+    ENTÃO o sistema deve retornar False e sucesso
