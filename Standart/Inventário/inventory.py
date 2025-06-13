@@ -27,7 +27,12 @@ def create():
         _purchase_date = _json['purchase_date']
 
         if not isinstance(_client_id, int) or not isinstance(_product_id, int) or not isinstance(_number_of_items, int) or not isinstance(_purchase_date, str):
+            print("Invalid data types")
             return jsonify({'msg': 'Invalid data types'}), 400
+        
+        if _client_id < 0 or _product_id < 0 or _number_of_items < 0:
+            print("Negative values are not allowed")
+            return jsonify({'msg': 'Negative values are not allowed'}), 400
 
         product_exists = verify_product_id(_product_id)
         client_exists  = verify_client_id(_client_id)
@@ -146,6 +151,10 @@ def remove_products():
 
         if not isinstance(_remotion_id, int) or _type not in ['product', 'client']:
             return jsonify({'msg': 'Invalid data types. type must be either "product" or "client"'}), 400
+        
+        if _remotion_id < 0:
+            print("Negative values are not allowed")
+            return jsonify({'msg': 'Negative values are not allowed'}), 400
 
         con = mysql.connect()
         cur = con.cursor()

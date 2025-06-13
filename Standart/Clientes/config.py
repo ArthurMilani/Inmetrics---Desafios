@@ -1,5 +1,12 @@
+import logging 
 from app import app
 from flaskext.mysql import MySQL
+
+logging.basicConfig(
+    level=logging.INFO, 
+    format='%(asctime)s - %(levelname)s - %(message)s', 
+    datefmt='[%d/%b/%Y %H:%M:%S]'
+    )
 
 mysql = MySQL()
 app.config['MYSQL_DATABASE_USER'] = 'root'

@@ -23,7 +23,12 @@ def create():
         _status = _json['status']
 
         if not isinstance(_name, str) or not isinstance(_description, str) or not isinstance(_price, (int, float)) or not isinstance(_quantity, int) or not isinstance(_status, bool):
+            print("Invalid data types")
             return jsonify({'msg': 'Invalid data types'}), 400
+        
+        if _price < 0 or _quantity < 0:
+            print("Price and quantity must be non-negative")
+            return jsonify({'msg': 'Price and quantity must be non-negative'}), 400
 
         con = mysql.connect()
         cur = con.cursor(pymysql.cursors.DictCursor)
@@ -63,6 +68,10 @@ def update(id):
 
         if not isinstance(_name, str) or not isinstance(_description, str) or not isinstance(_price, (int, float)) or not isinstance(_quantity, int) or not isinstance(_status, bool):
             return jsonify({'msg': 'Invalid data types'}), 400
+        
+        if _price < 0 or _quantity < 0:
+            print("Price and quantity must be non-negative")
+            return jsonify({'msg': 'Price and quantity must be non-negative'}), 400
 
         con = mysql.connect()
         cur = con.cursor(pymysql.cursors.DictCursor)

@@ -1,6 +1,6 @@
 from app import app
 import jwt
-from config import mysql
+from config import logging
 from flask import jsonify, request
 from products import products_bp
 
@@ -11,6 +11,11 @@ app.register_blueprint(products_bp)
 #Validate the Bearer Token
 @app.before_request
 def validate_token():
+
+    #Log the request details
+    logging.info(f"Request: {request.method} {request.url}")
+    logging.info(f"Headers: {request.headers}")
+    logging.info(f"Body: {request.get_data(as_text=True)}")
     
     if request.endpoint == 'products.health': #The health endpoint does not require authentication
         return
@@ -34,9 +39,15 @@ def validate_token():
     except Exception as e:
         print("Error:", e)
         return jsonify({"msg": "Internal Server Error"}), 500
+    
+@app.after_request
+def log_response_info(response):
+    logging.info(f"Resposta: status {response.status_code}")
+    logging.info(f"Response body: {response.get_data(as_text=True)}")
+    return response
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', debug=True, port=5001)
+    app.run(host='0.0.0.0', debug=False, port=5001)
 
 
