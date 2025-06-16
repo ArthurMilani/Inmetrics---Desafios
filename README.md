@@ -248,6 +248,30 @@ ou
 ```
 Em caso de sucesso, retornará uma mensagem indicando isto.
 
+## Autenticação
 
+Este microserviço está um pouco desconectado dos demais, visto que sua única função é a segurança dos Endpoints por meio de autenticação via Token. Portanto, para acessar as APIs é necessário ter um usuário cadastrado no banco de dados de users. Os atributos são username e password, apenas.
+
+### 01) users/create [ POST ]
+Responsável pela criação de um usuário válido no sistema. Precisa ter o body da requisição com o seguinte estilo:
+```json
+{
+    "username":"Arthur",
+    "password":"Testando"
+}
+```
+
+### 02) users/login [ POST ]
+Responsável por autenticar o usuário, fornecendo token de sessão em caso de sucesso. Precisa incluir o username e password no header da requisição, no campo de authentication.
+
+A resposta da requisição em caso de sucesso deve ser similar:
+```json
+{
+    "msg": "Success",
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IkFydGh1ciIsImV4cCI6MTc0NzE1MDIxN30.6Kzh4B1sygDOnHK8NgNEohLO4s9cYX8EKVg_plAz0f0"
+}
+```
+
+Assim que receber o token, o usuário deverá passá-lo no cabeçalho de toda requisição que fizer no formato de Bearer Token para que a mesma seja concluída com sucesso. Caso contrário, será retornada uma mensagem de erro Unauthorized, impedindo a execução da requisição.
 
 
