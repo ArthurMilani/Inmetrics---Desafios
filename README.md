@@ -1,6 +1,6 @@
 # Inmetrics---Desafios
 
-# Introdução
+# Introdução && Cobertura
 
 O projeto em questão consiste a um código Back-end desenvovlido em Flask (Python) que implementa um sistema de cadastro de clientes e produtos. Baseado na teoria de BDD, o projeto segue uma arquitetura de micro-serviços sendo cada um independente do outro em certo grau. Além disso, o projeto conta com testes automatizados, desenvolvidos com Robot framework e seguindo a estrutura de Guerkins, se aproximando de uma linguagem falada, e também conta com algoritmo de monitoramento sintético, o qual verifica a disponibilidade dos microserviços periodicamente.
 
@@ -71,7 +71,60 @@ A requisição não tem _BODY_ e possui resposta esperada uma mensagem de sucess
 
 Responsável por retornar se um cliente específico está registrado ou não no sistema. Retorna True se estiver e False se não estiver.
 
+06) address/create  [ POST ]
+Responsável pela criação dos endereços. Os atributos dos endereços precisam ser passados no _BODY_ da requisição com o seguinte formato:
+```json
+{
+    "client_id": 1,
+    "state": "SP",
+    "city": "Andradina",
+    "street": "Bandeirantes",
+    "number": 100,
+    "CEP": "00000-000"
+}
+```
+Quanto à response esperada, ela retornará uma mensagem de sucesso e o ID do objeto criado.
 
+07) address/fetch/{client_id} [ GET ]
+Responsável pela busca dos endereços de um determinado cliente, cujo ID deve ser especificado na URL da requisição. Além disso, é possível buscar todos endereços no sistema ao omitir o ID na URL.
+A seguir está a response bem sucedida:
+```json
+[
+    {
+        "CEP": "00000-000",
+        "city": "Andradina",
+        "client_id": 1,
+        "id": 8,
+        "number": 100,
+        "state": "SP",
+        "street": "Bandeirantes"
+    },
+    {
+        "CEP": "00000-000",
+        "city": "Andradina",
+        "client_id": 1,
+        "id": 9,
+        "number": 100,
+        "state": "SP",
+        "street": "Bandeirantes"
+    }
+]
+```
+
+08) address/update/{id}  [ PUT ]
+Responsável por atualizar os dados de um endereço específico. Os atributos precisam ser passados no _BODY_ com o seguinte formato:
+{
+    "state": "SP",
+    "city": "Pereira",
+    "street": "Bandeirantes",
+    "number": 100,
+    "CEP": "00000-000"
+}
+
+Quanto à response esperada, ela retornará uma mensagem de sucesso
+
+09) address/delete/{id} [ DELETE ]
+Responsável por remover os dados de um endereço específico. Quanto à response esperada, ela retornará uma mensagem de sucesso.
 
 
 
