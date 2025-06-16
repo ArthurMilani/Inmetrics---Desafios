@@ -13,6 +13,7 @@ Antes da explicação individual de cada microserviço, é importante mencionar 
 Este microserviço possui o CRUD de dois elementos, cliente e endereço, possuindo relação um pra muitos. A entidade cliente tem 5 atributos, sendo eles: id, name, cpf, email e balance. Enquanto a entidade endereço tem 7 atributos, sendo eles id, client_id, state, city, street, number e cep. Note que os campos de ID não precisam ser preenchidos, o próprio Banco de Dados os gera.
 
 01) clients/create  [ POST ]
+
 Responsável pela cadastro de um cliente novo no sistema. Os campos de email e cpf não podem ser repetidos, enquanto os campos de cpf, email e cep devem possuir formato corretos.
 A seguir tem-se o _BODY_ esperado:
 ```json
@@ -26,6 +27,7 @@ A seguir tem-se o _BODY_ esperado:
 A resposta esperada consiste em uma mensagem de sucesso e o ID do objeto criado
 
 02) clients/fetch/{id}  [ GET ]
+
 Responsável pela busca de um cliente específico no sistema. Se desejar, é possível omitir o ID da url para buscar todos os clientes.
 A requisição não tem _BODY_ e possui resposta esperada:
 ```json
@@ -46,6 +48,30 @@ A requisição não tem _BODY_ e possui resposta esperada:
   }
 ]
 ```
+03) clients/update/{id}  [ PUT ]
+
+Responsável por atualizar um cliente específico, cujo ID deve ser especificado na URL da requisição obrigatoriamente.
+O _BODY_ da requisição esperado é igual ao do Endpoint de criação de cliente:
+```json
+{
+    "name": "Arthur",
+    "email": "arthur.giovanini@inmetrics.com.br",
+    "cpf": "454.090.000-00",
+    "balance": 30.25
+}
+```
+E a resposta esperada consiste em uma mensagem de sucesso.
+
+04) clients/delete/{id} [ DELETE ]
+
+Responsável por remover um cliente específico, cujo ID deve ser especificado na URL da requisição obrigatoriamente.
+A requisição não tem _BODY_ e possui resposta esperada uma mensagem de sucesso.
+
+05) /clients/exists/{id} [ GET ]
+
+Responsável por retornar se um cliente específico está registrado ou não no sistema. Retorna True se estiver e False se não estiver.
+
+
 
 
 
