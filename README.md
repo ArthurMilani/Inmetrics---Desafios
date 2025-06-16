@@ -12,7 +12,7 @@ Antes da explicação individual de cada microserviço, é importante mencionar 
 ## Clientes:
 Este microserviço possui o CRUD de dois elementos, cliente e endereço, possuindo relação um pra muitos. A entidade cliente tem 5 atributos, sendo eles: id, name, cpf, email e balance. Enquanto a entidade endereço tem 7 atributos, sendo eles id, client_id, state, city, street, number e cep. Note que os campos de ID não precisam ser preenchidos, o próprio Banco de Dados os gera.
 
-01) clients/create  [ POST ]
+### 01) clients/create  [ POST ]
 
 Responsável pela cadastro de um cliente novo no sistema. Os campos de email e cpf não podem ser repetidos, enquanto os campos de cpf, email e cep devem possuir formato corretos.
 A seguir tem-se o _BODY_ esperado:
@@ -26,7 +26,7 @@ A seguir tem-se o _BODY_ esperado:
 ```
 A resposta esperada consiste em uma mensagem de sucesso e o ID do objeto criado
 
-02) clients/fetch/{id}  [ GET ]
+### 02) clients/fetch/{id}  [ GET ]
 
 Responsável pela busca de um cliente específico no sistema. Se desejar, é possível omitir o ID da url para buscar todos os clientes.
 A requisição não tem _BODY_ e possui resposta esperada:
@@ -48,7 +48,7 @@ A requisição não tem _BODY_ e possui resposta esperada:
   }
 ]
 ```
-03) clients/update/{id}  [ PUT ]
+### 03) clients/update/{id}  [ PUT ]
 
 Responsável por atualizar um cliente específico, cujo ID deve ser especificado na URL da requisição obrigatoriamente.
 O _BODY_ da requisição esperado é igual ao do Endpoint de criação de cliente:
@@ -62,16 +62,16 @@ O _BODY_ da requisição esperado é igual ao do Endpoint de criação de client
 ```
 E a resposta esperada consiste em uma mensagem de sucesso.
 
-04) clients/delete/{id} [ DELETE ]
+### 04) clients/delete/{id} [ DELETE ]
 
 Responsável por remover um cliente específico, cujo ID deve ser especificado na URL da requisição obrigatoriamente.
 A requisição não tem _BODY_ e possui resposta esperada uma mensagem de sucesso.
 
-05) /clients/exists/{id} [ GET ]
+### 05) /clients/exists/{id} [ GET ]
 
 Responsável por retornar se um cliente específico está registrado ou não no sistema. Retorna True se estiver e False se não estiver.
 
-06) address/create  [ POST ]
+### 06) address/create  [ POST ]
 Responsável pela criação dos endereços. Os atributos dos endereços precisam ser passados no _BODY_ da requisição com o seguinte formato:
 ```json
 {
@@ -85,7 +85,7 @@ Responsável pela criação dos endereços. Os atributos dos endereços precisam
 ```
 Quanto à response esperada, ela retornará uma mensagem de sucesso e o ID do objeto criado.
 
-07) address/fetch/{client_id} [ GET ]
+### 07) address/fetch/{client_id} [ GET ]
 Responsável pela busca dos endereços de um determinado cliente, cujo ID deve ser especificado na URL da requisição. Além disso, é possível buscar todos endereços no sistema ao omitir o ID na URL.
 A seguir está a response bem sucedida:
 ```json
@@ -111,7 +111,7 @@ A seguir está a response bem sucedida:
 ]
 ```
 
-08) address/update/{id}  [ PUT ]
+### 08) address/update/{id}  [ PUT ]
 Responsável por atualizar os dados de um endereço específico. Os atributos precisam ser passados no _BODY_ com o seguinte formato:
 {
     "state": "SP",
@@ -123,7 +123,7 @@ Responsável por atualizar os dados de um endereço específico. Os atributos pr
 
 Quanto à response esperada, ela retornará uma mensagem de sucesso
 
-09) address/delete/{id} [ DELETE ]
+### 09) address/delete/{id} [ DELETE ]
 Responsável por remover os dados de um endereço específico. Quanto à response esperada, ela retornará uma mensagem de sucesso.
 
 
