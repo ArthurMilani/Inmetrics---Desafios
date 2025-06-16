@@ -113,6 +113,7 @@ A seguir está a response bem sucedida:
 
 ### 08) address/update/{id}  [ PUT ]
 Responsável por atualizar os dados de um endereço específico. Os atributos precisam ser passados no _BODY_ com o seguinte formato:
+```json
 {
     "state": "SP",
     "city": "Pereira",
@@ -120,11 +121,133 @@ Responsável por atualizar os dados de um endereço específico. Os atributos pr
     "number": 100,
     "CEP": "00000-000"
 }
+```
 
 Quanto à response esperada, ela retornará uma mensagem de sucesso
 
 ### 09) address/delete/{id} [ DELETE ]
 Responsável por remover os dados de um endereço específico. Quanto à response esperada, ela retornará uma mensagem de sucesso.
+
+## Produtos:
+
+Este microserviço possui apenas a entidade de produtos no Banco de Dados, sendo reponsável por operar sobre o catálogo de produtos de uma empresa. Seus atributos são nome, o qual não pode ser repetido, descrição, quantidade no estoque, preço e status.
+
+### 01) /products/create/ [ POST ]
+Responsável pela criação de um novo produto. Os parâmetros precisam ser passados no body seguindo o seguinte formato:
+
+```json
+{
+    "name": "Monitor 3",
+    "description": "Melhor experiência como Gamer!",
+    "quantity": 500,
+    "price": 100.00,
+    "status": true
+}
+```
+
+Note que o name precisa ser único e o status deve ser boolean. Em caso de sucesso, irá retornar uma mensagem de sucesso e o ID do item criado.
+
+### 02) products/fetch/{id}  [ GET ]
+Responsável pela busca de um produto pelo id, ou de todos os produtos. Para buscar um produto específico, basta colocar seu id no endpoint da requisição. Caso deseje buscar todos os produtos, basta não incluir nenhum id.
+
+Segue a request esperada para casos de sucesso:
+```json
+[
+    {
+        "description": "Melhor experiência como Gamer!",
+        "id": 2,
+        "name": "Teclado",
+        "price": "100.00",
+        "quantity": 500,
+        "status": 1
+    },
+    {
+        "description": "Guarde suas fotos aqui!",
+        "id": 3,
+        "name": "Porta Retratão",
+        "price": "10.00",
+        "quantity": 20,
+        "status": 1
+    }
+]
+```
+
+### 03) products/update/{id}  [ PUT ]
+Responsável por atualizar os dados de um produto, o qual deve ter seu id especificado na URL da requisição. Quanto ao body esperado, ele deve seguir o seguinte formato:
+```json
+{
+    "name": "Teclado",
+    "description": "Melhor experiência como Gamer!",
+    "quantity": 500,
+    "price": 100.00,
+    "status": true
+}
+```
+Além disso, em caso de sucesso, uma resposta indicado sucesso é retornada.
+
+### 04) products/delete/{îd}  [ DELETE ]
+Responsável por remover os dados de um produto específico. Para selecionar o produto, basta adicionar seu id ao fim do endpoint. O método executado por este endpoint é responsável por se comunicar com o serviço de Inventário para manter a consistência entre os bancos de dados: se um produto for removido, o mesmo será removido do banco de dados de inventário também.
+Quanto à response esperada, ela retornará uma mensagem de sucesso. 
+
+### 05) products/exists/{id}  [ GET ]
+Este endpoint é responsável por retornar true caso o produto esteja cadastrado no banco de dados, e false caso contrário. Ele é especificamente chamado pelo micro serviço de inventário, para verificar se o product_id especificado na criação de um relacionamento se refere a um produto existente. O corpo da requisição é vazio, necessitando apenas o token em seu cabeçalho e do ID na URI.
+
+## Inventário
+
+Este microserviço é responsável pelo invetariamento dos produtos contratados por um determinado cliente. Este microserviço funciona como se fosse uma relação muitos para muitos entre clientes e produtos, mas possuem bancos de dados separados dos demais. Os atributos de tal entidade são ID, número de itens, ID do produto contratado, ID do cliente contratante, nome do produto e data de compra / contratação.
+
+
+### 01) inventory/add_product  [ POST ]
+Responsável por adicionar um produto no inventário de um cliente. Em outras palavras, ele cria um relacionamento entre um cliente e um produto, dado que a relação entre eles é de many-to-many. Este método se comunica com os outros dois serviços, chamando o endpoint de clients/exists e products/exists para que seja possível associar apenas objetos existentes no banco de dados. O body da requisição deve seguir o seguinte formato:
+```json
+{
+    "client_id": 4,
+    "product_id": 4,
+    "number_of_items": 5,
+    "purchase_date": "2024-11-01T10:30:00"
+}
+```
+Em caso de sucesso, será retornada uma mensagem indicando o sucesso da operação e o id do objeto criado.
+
+### 02) inventory/list_products_ids/{client_id}  [ GET ]
+Responsável por buscar todos os produtos associados a um cliente especificado pelo client_id na URL da requisição. Como não é função do banco de dados de inventário guardar todos os atributos de produtos, ele guarda apenas o id do produto e seu nome. A resposta esperada em caso de sucesso seguirá o seguinte formato:
+```json
+[
+    {
+        "id": 2,
+        "number_of_items": 5,
+        "product_id": 2,
+        "product_name": "Teclado",
+        "purchase_date": "Fri, 01 Nov 2024 00:00:00 GMT"
+    },
+    {
+        "id": 3,
+        "number_of_items": 5,
+        "product_id": 2,
+        "product_name": "Teclado",
+        "purchase_date": "Fri, 01 Nov 2024 00:00:00 GMT"
+    }
+]
+```
+
+### 03) inventory/remove_product/{id}  [ DELETE ]
+Responsável por remover um item de um inventário especificado pelo id na URL da requisição. Em caso de sucesso, retornará uma mensagem indicando o sucesso de tal operação.
+
+### 04) inventory/remove_many  [ DELETE ]
+Também é responsável por remover itens do inventário, mas neste caso, irá remover todos os itens que possuam referência a um produto ou cliente específico. Para tal, ele possui dois campos em seu corpo, o id da entidade sendo removida e o tipo, podendo ser tanto cliente quanto produto. Tal endpoint é chamado pelos endpoints de remoção de clientes produtos com o objetivo de manter a consistência nos bancos de dados. O formato do body deve ser o seguinte:
+```json
+{
+    "remotion_id": 4,
+    "type": "client"
+}
+ou
+{
+    "remotion_id": 4,
+    "type": "product"
+}
+```
+Em caso de sucesso, retornará uma mensagem indicando isto.
+
 
 
 
