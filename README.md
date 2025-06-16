@@ -10,5 +10,37 @@ O projeto possui 4 microserviços: Clientes, Produtos, Inventário e Autenticaç
 Antes da explicação individual de cada microserviço, é importante mencionar que todos microserviços exigem autenticação via bearer token, o qual é obtido através dos Endpoints de Autenticação.
 
 ## Clientes:
-Este microserviço possui o CRUD de dois elementos, cliente e endereço, possuindo relação um pra muitos. A entidade cliente tem 5 atributos, sendo eles: id, name, cpf, email e balance. Enquanto a entidade endereço tem 7 atributos, sendo eles id, client_id, state, city, street, number e cep.
+Este microserviço possui o CRUD de dois elementos, cliente e endereço, possuindo relação um pra muitos. A entidade cliente tem 5 atributos, sendo eles: id, name, cpf, email e balance. Enquanto a entidade endereço tem 7 atributos, sendo eles id, client_id, state, city, street, number e cep. Note que os campos de ID não precisam ser preenchidos, o próprio Banco de Dados os gera.
+
+01) clients/create  [ POST ]
+Responsável pela cadastro de um cliente novo no sistema. Os campos de email e cpf não podem ser repetidos, enquanto os campos de cpf, email e cep devem possuir formato corretos.
+A seguir tem-se o _BODY_ esperado:
+{
+    "name": "Arthur",
+    "email": "arthur.giovanini@inmetrics.com.br",
+    "cpf": "454.090.000-00",
+    "balance": 30.25
+}
+A resposta esperada consiste em uma mensagem de sucesso e o ID do objeto criado
+
+02) clients/fetch/{id}  [ GET ]
+Responsável pela busca de um cliente específico no sistema. Se desejar, é possível omitir o ID da url para buscar todos os clientes.
+A requisição não tem _BODY_ e possui resposta esperada:
+[
+    {
+        "balance": "30.25",
+        "cpf": "454.090.000-00",
+        "email": "arthur.giovanini@inmetrics.com.br",
+        "id": 1,
+        "name": "Pedro"
+    },
+    {
+        "balance": "30.25",
+        "cpf": "454.454.454-27",
+        "email": "Vinícius_Peixoto@inmetrics.com.br",
+        "id": 4,
+        "name": "Vinícius"
+    }
+]
+
 
