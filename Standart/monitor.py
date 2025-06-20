@@ -61,10 +61,21 @@ def health_request(service_name):
 
 
 def login_test():
+    USER = "Arthur"
+    PASSWORD = "Testando"
     try:
         url = "http://192.168.0.51/user/login"
-        auth = HTTPBasicAuth('Arthur', 'Testando')
+        auth = HTTPBasicAuth(USER, PASSWORD)
         response = requests.post(url, auth=auth, timeout=15)
+        
+        # If the user does not exist, create it
+        if response.status_code == 401:
+            print("Creating user for login test...")
+            response = requests.post("http://192.168.0.51/user/create", json={"username": USER, "password": PASSWORD}, timeout=15)
+            if response.status_code == 201:
+                print(f"[{time.ctime()}] SUCCESS: User created for login test")
+            response = requests.post(url, auth=auth, timeout=15)
+
         if response.status_code == 200:
             global auth_token 
             auth_token = response.json().get("token")
