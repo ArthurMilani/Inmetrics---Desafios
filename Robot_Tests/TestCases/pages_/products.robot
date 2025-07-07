@@ -4,7 +4,7 @@ Library  String
 Library  FakerLibrary    locale=pt_BR
 
 *** Variables ***
-${products_url}  http://localhost:5001/products
+${products_url}  http://172.23.208.1/products
 
 *** Keywords ***
 Verificar saúde
@@ -66,4 +66,10 @@ Deletar produto
     [Arguments]  ${id}
     &{headers} =  Create Dictionary  content-type=application/json  authorization=Bearer ${AUTH_TOKEN}
     ${response}=  DELETE  url=${products_url}/delete/${id}  headers=${headers}
+    RETURN  ${response}
+
+Verificar existencia de produto
+    [Arguments]  ${id}
+    &{headers} =  Create Dictionary  content-type=application/json  authorization=Bearer ${AUTH_TOKEN}
+    ${response}=  GET  url=${products_url}/exists/${id}  headers=${headers}  expected_status=Anything
     RETURN  ${response}

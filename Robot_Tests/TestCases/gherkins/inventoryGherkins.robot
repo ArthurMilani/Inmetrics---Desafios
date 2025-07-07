@@ -33,11 +33,6 @@ POSITIVE - Buscar inventário de cliente com sucesso
     ENTÃO o sistema deve retornar o inventário do cliente com sucesso
 
 
-# NEGATIVE - Buscar inventário de cliente inexistente
-#     DADO que o usuário possui um token de autenticação válido
-#     QUANDO ele faz a requisição de buscar o inventário de um cliente inexistente
-#     ENTÃO o sistema deve retornar erro de cliente não encontrado
-
 
 # Remoção de muitos itens do inventário por id de produto ou cliente
 POSITIVE - Remover inventário de cliente com sucesso

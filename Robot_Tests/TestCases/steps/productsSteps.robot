@@ -60,6 +60,21 @@ QUANDO ele faz a requisição de atualizar o produto com dados inválidos
         Fail  Não foi possível criar o produto para atualização
     END
 
+
+QUANDO ele faz a requisição de atualizar o produto com dados repetidos
+    ${fake_name}=  FakerLibrary.Name
+    ${response1}=  Criar produto  name=${fake_name}
+    ${response2}=  Criar produto
+    IF    ${response1.status_code} == 201 and ${response2.status_code} == 201
+        ${product_id}=  Set Variable   ${response2.json()['id']}
+        ${response}=  Atualizar produto  id=${product_id}  name=${fake_name}
+        ${status_code}=  Set Variable  ${response.status_code}
+        ${status_code}=  Set Suite Variable  ${status_code}
+    ELSE
+        Fail  Não foi possível criar os produtos para atualização
+    END
+
+
 QUANDO ele faz a requisição de buscar um produto existente no sistema
     ${response}=  Criar produto
     IF    ${response.status_code} == 201
@@ -104,3 +119,27 @@ QUANDO ele faz a requisição de deletar um produto existente no sistema
 
 ENTÃO o sistema deve deletar o produto do banco de dados e retornar sucesso
     Should Be Equal As Integers  ${status_code}  200
+
+
+QUANDO ele faz a requisição de verificar se um produto existe com ID existente
+    ${response}=  Criar produto
+    IF    ${response.status_code} == 201
+        ${product_id}=  Set Variable   ${response.json()['id']}
+        ${response}=  Verificar existencia de produto  id=${product_id}
+        ${response}=  Set Suite Variable  ${response}
+    ELSE
+        Fail  Não foi possível criar o produto para verificação
+    END
+
+ENTÃO o sistema deve retornar True e sucesso
+    Should Be Equal As Integers  ${response.status_code}  200
+    Should Be Equal As Strings  ${response.json()['status']}  True
+
+
+QUANDO ele faz a requisição de verificar se um produto existe com ID inexistente
+    ${response}=  Verificar existencia de produto  id=999999
+    ${response}=  Set Suite Variable  ${response}
+
+ENTÃO o sistema deve retornar False e sucesso
+    Should Be Equal As Integers  ${response.status_code}  200
+    Should Be Equal As Strings  ${response.json()['status']}  False

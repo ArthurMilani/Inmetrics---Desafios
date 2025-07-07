@@ -4,7 +4,7 @@ Library    String
 Library    FakerLibrary
 
 *** Variables ***
-${inventory_url}  http://localhost:5002/inventory
+${inventory_url}  http://172.23.208.1/inventory
 
 *** Keywords ***
 

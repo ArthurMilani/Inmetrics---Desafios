@@ -4,7 +4,7 @@ Library  String
 Library  FakerLibrary    locale=pt_BR
 
 *** Variables ***
-${client_url}  http://localhost:5000/clients
+${client_url}  http://172.23.208.1/clients
 
 *** Keywords ***
 Verificar saúde
@@ -63,4 +63,8 @@ Deletar cliente
     ${response}=  DELETE  url=${client_url}/delete/${id}  headers=${headers}
     RETURN  ${response}
 
-
+Verificar existencia de cliente
+    [Arguments]  ${id}
+    &{headers} =  Create Dictionary  content-type=application/json  authorization=Bearer ${AUTH_TOKEN}
+    ${response}=  GET  url=${client_url}/exists/${id}  headers=${headers}  expected_status=Anything
+    RETURN  ${response}

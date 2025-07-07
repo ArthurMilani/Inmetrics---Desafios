@@ -3,7 +3,7 @@ Library  RequestsLibrary
 Library  String
 
 *** Variables ***
-${HOST}  http://localhost:5000/address
+${HOST}  http://172.23.208.1/address
 
 
 *** Keywords ***
