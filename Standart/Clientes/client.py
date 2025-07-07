@@ -4,7 +4,7 @@ import requests
 import re
 from config import mysql
 from flask import jsonify
-from flask import flash, request, Blueprint
+from flask import request, Blueprint
 
 clients_bp = Blueprint("clients", __name__)
 INVENTORY_API_URL = "http://localhost:5002/inventory"
@@ -24,6 +24,10 @@ def create():
 
         if not isinstance(_name, str) or not isinstance(_email, str) or not isinstance(_cpf, str) or not isinstance(_balance, (int, float)):
             return jsonify({'msg': 'Invalid data types'}), 400
+        
+        if _balance < 0:
+            print(f"Balance cannot be negative: {_balance}")
+            return jsonify({'msg': 'Balance cannot be negative'}), 400
         
         if not validate_cpf(_cpf):
             return jsonify({'msg': 'Invalid CPF format'}), 400
@@ -68,6 +72,10 @@ def update(id):
 
         if not isinstance(_name, str) or not isinstance(_email, str) or not isinstance(_cpf, str) or not isinstance(_balance, (int, float)):
             return jsonify({'msg': 'Invalid data types'}), 400
+        
+        if _balance < 0:
+            print(f"Balance cannot be negative: {_balance}")
+            return jsonify({'msg': 'Balance cannot be negative'}), 400
         
         if not validate_cpf(_cpf):
             return jsonify({'msg': 'Invalid CPF format'}), 400

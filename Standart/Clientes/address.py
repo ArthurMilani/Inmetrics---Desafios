@@ -19,15 +19,22 @@ def create():
         _city = _json['city']
         _street = _json['street']
         _number = _json['number']
-        _cep = _json['CEP']
+        _cep = _json['CEP'][:5] + '-' + _json['CEP'][5:] if re.fullmatch(r'^\d{8}$', _json['CEP']) else _json['CEP']
 
         if not isinstance(_client_id, int) or not isinstance(_state, str) or not isinstance(_city, str) or not isinstance(_street, str) or not isinstance(_number, int) or not isinstance(_cep, str):
+            print("Invalid data types")
             return jsonify({'msg': 'Invalid data types'}), 400
         
+        if _number <= 0:
+            print("Invalid number: ", _number)
+            return jsonify({'msg': 'Invalid number'}), 400
+        
         if not validate_cep(_cep):
+            print(f"Invalid CEP format: {_cep}")
             return jsonify({'msg': 'Invalid CEP format'}), 400
         
         if len(_state) != 2:
+            print(f"Invalid state: {_state}")
             return jsonify({'msg': 'Invalid state'}), 400
 
         con = mysql.connect()
@@ -41,6 +48,7 @@ def create():
         return response
     except pymysql.err.IntegrityError as e:
         if "Cannot add or update a child row" in str(e):
+            print("Client ID does not exist")
             return jsonify({'msg': 'Client ID does not exist'}), 404
     except KeyError as e:
         print("KeyError: ", e)
@@ -64,15 +72,22 @@ def update(id):
         _city = _json['city']
         _street = _json['street']
         _number = _json['number']
-        _cep = _json['CEP']
+        _cep = _json['CEP'][:5] + '-' + _json['CEP'][5:] if re.fullmatch(r'^\d{8}$', _json['CEP']) else _json['CEP']
 
         if not isinstance(_state, str) or not isinstance(_city, str) or not isinstance(_street, str) or not isinstance(_number, int) or not isinstance(_cep, str):
+            print("Invalid data types")
             return jsonify({'msg': 'Invalid data types'}), 400
         
+        if _number <= 0:
+            print("Invalid number: ", _number)
+            return jsonify({'msg': 'Invalid number'}), 400
+
         if not validate_cep(_cep):
+            print(f"Invalid CEP format: {_cep}")
             return jsonify({'msg': 'Invalid CEP format'}), 400
         
         if len(_state) != 2:
+            print(f"Invalid state: {_state}")
             return jsonify({'msg': 'Invalid state'}), 400
 
         con = mysql.connect()
@@ -87,6 +102,7 @@ def update(id):
 
     except pymysql.err.IntegrityError as e:
         if "Cannot add or update a child row" in str(e):
+            print("Client ID does not exist")
             return jsonify({'msg': 'Client ID does not exist'}), 404
     except KeyError as e:
         print("KeyError: ", e)
@@ -99,7 +115,7 @@ def update(id):
         if cur: cur.close()
         if con: con.close()
 
-    
+
 def validate_cep(_cep):
     CEP_REGEX = r'^\d{5}-\d{3}$'
     return re.fullmatch(CEP_REGEX, _cep)
