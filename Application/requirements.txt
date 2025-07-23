@@ -1,0 +1,8 @@
+flask
+robotframework
+robotframework-requests
+robotframework-faker
+flask-mysql
+flask-cors
+python-dotenv
+PyJWT

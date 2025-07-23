@@ -326,11 +326,13 @@ resource "aws_launch_template" "app_lt" {
               cd /home/ubuntu
               sudo git clone -b Desafio03 https://github.com/ArthurMilani/Inmetrics---Desafios.git flask_app
 
-              sudo pip3 install --break-system-packages --ignore-installed -r flask_app/requirements.txt
+              cat <<EOT >> /home/ubuntu/flask_app/Application/.env
+              DB_HOST=${data.template_file.db_host_file.rendered}
+              DB_USER=ArthurMilani
+              DB_PASSWORD=pacote321
+              EOT
 
-              echo "${data.template_file.db_host_file.rendered}" > /opt/db_host.txt
-
-              cd flask_app/Standart
+              cd flask_app/Application
               sudo python3 starter.py
 
               EOF
