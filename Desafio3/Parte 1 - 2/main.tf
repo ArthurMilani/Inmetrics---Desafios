@@ -17,6 +17,7 @@ resource "aws_vpc" "main" {
 
   tags = {
     Name  = "vpc"
+    Author = "Arthur Milani"
   }
 }
 
@@ -26,6 +27,7 @@ resource "aws_internet_gateway" "igw" {
 
   tags = {
     Name  = "igw"
+    Author = "Arthur Milani"
   }
 }
 
@@ -40,6 +42,7 @@ resource "aws_subnet" "public_1a" {
 
   tags = {
     Name  = "subnet-public-1a"
+    Author = "Arthur Milani"
   }
 }
 
@@ -52,6 +55,7 @@ resource "aws_subnet" "public_1c" {
 
   tags = {
     Name  = "subnet-public-1c"
+    Author = "Arthur Milani"
   }
 }
 
@@ -65,6 +69,7 @@ resource "aws_subnet" "app_1a" {
 
   tags = {
     Name  = "subnet-app-1a"
+    Author = "Arthur Milani"
   }
 }
 
@@ -76,6 +81,7 @@ resource "aws_subnet" "app_1c" {
 
   tags = {
     Name  = "subnet-app-1c"
+    Author = "Arthur Milani"
   }
 }
 
@@ -87,6 +93,7 @@ resource "aws_subnet" "db_1a" {
 
   tags = {
     Name  = "subnet-db-1a"
+    Author = "Arthur Milani"
   }
 }
 
@@ -98,6 +105,7 @@ resource "aws_subnet" "db_1c" {
 
   tags = {
     Name  = "subnet-db-1c"
+    Author = "Arthur Milani"
   }
 }
 
@@ -107,6 +115,7 @@ resource "aws_subnet" "db_1c" {
 resource "aws_eip" "nat_1a" {
   tags = {
     Name  = "eip-nat-1a"
+    Author = "Arthur Milani"
   }
 }
 
@@ -114,6 +123,7 @@ resource "aws_eip" "nat_1a" {
 resource "aws_eip" "nat_1c" {
   tags = {
     Name  = "eip-nat-1c"
+    Author = "Arthur Milani"
   }
 }
 
@@ -126,6 +136,7 @@ resource "aws_nat_gateway" "nat_1a" {
 
   tags = {
     Name  = "natgw-1a"
+    Author = "Arthur Milani"
   }
 }
 
@@ -136,6 +147,7 @@ resource "aws_nat_gateway" "nat_1c" {
 
   tags = {
     Name  = "natgw-1c"
+    Author = "Arthur Milani"
   }
 }
 
@@ -152,6 +164,7 @@ resource "aws_route_table" "public" {
 
   tags = {
     Name  = "rt-public"
+    Author = "Arthur Milani"
   }
 }
 
@@ -180,6 +193,7 @@ resource "aws_route_table" "private" {
 
   tags = {
     Name  = "rt-private"
+    Author = "Arthur Milani"
   }
 }
 
@@ -240,6 +254,7 @@ resource "aws_security_group" "bastion_sg" {
 
   tags = {
     Name  = "sg-bastion"
+    Author = "Arthur Milani"
   }
 }
 
@@ -266,6 +281,7 @@ EOF
 
   tags = {
     Name  = "bastion"
+    Author = "Arthur Milani"
     AMBIENTE  = "DEV"
     RESPONSAVEL = "arthur.giovanini@inmetrics.com.br"
     SCHEDULE = "online"
@@ -305,6 +321,7 @@ resource "aws_security_group" "app_sg" {
 
   tags = {
     Name  = "sg-app"
+    Author = "Arthur Milani"
   }
 }
 
@@ -325,6 +342,8 @@ resource "aws_launch_template" "app_lt" {
 
               cd /home/ubuntu
               sudo git clone -b Desafio03 https://github.com/ArthurMilani/Inmetrics---Desafios.git flask_app
+              
+              sudo pip3 install --break-system-packages --ignore-installed -r flask_app/Application/requirements.txt
 
               cat <<EOT >> /home/ubuntu/flask_app/Application/.env
               DB_HOST=${data.template_file.db_host_file.rendered}
@@ -350,6 +369,7 @@ resource "aws_launch_template" "app_lt" {
 
   tags = {
     Name  = "app-launch-template"
+    Author = "Arthur Milani"
   }
 }
 
@@ -410,6 +430,7 @@ resource "aws_lb_target_group" "app_tg" {
 
   tags = {
     Name  = "tg-app"
+    Author = "Arthur Milani"
   }
 }
 
@@ -424,6 +445,7 @@ resource "aws_lb" "app_alb" {
 
   tags = {
     Name  = "alb-app"
+    Author = "Arthur Milani"
   }
 }
 
@@ -578,6 +600,7 @@ resource "aws_db_subnet_group" "rds_subnet_group" {
 
   tags = {
     Name = "rds-subnet-group"
+    Author = "Arthur Milani"
   }
 }
 
@@ -603,6 +626,7 @@ resource "aws_security_group" "rds_sg" {
 
   tags = {
     Name = "sg-rds"
+    Author = "Arthur Milani"
   }
 }
 
