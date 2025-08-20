@@ -47,12 +47,18 @@ resource "aws_vpc" "main" {
   enable_dns_support   = true
   enable_dns_hostnames = true
 
-  tags = { Name = "vpc" }
+  tags = { 
+    Name = "vpc"
+    Author = "Arthur Milani"
+     }
 }
 
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main.id
-  tags   = { Name = "igw" }
+  tags = { 
+    Name = "igw" 
+    Author = "Arthur Milani"
+  }
 }
 
 resource "aws_subnet" "public_1a" {
@@ -60,7 +66,10 @@ resource "aws_subnet" "public_1a" {
   cidr_block              = "10.0.0.0/24"
   availability_zone       = "us-east-1a"
   map_public_ip_on_launch = true
-  tags                    = { Name = "subnet-public-1a" }
+  tags = { 
+    Name = "subnet-public-1a"
+    Author = "Arthur Milani" 
+  }
 }
 
 resource "aws_subnet" "public_1c" {
@@ -68,21 +77,30 @@ resource "aws_subnet" "public_1c" {
   cidr_block              = "10.0.1.0/24"
   availability_zone       = "us-east-1c"
   map_public_ip_on_launch = true
-  tags                    = { Name = "subnet-public-1c" }
+  tags = { 
+    Name = "subnet-public-1c"
+    Author = "Arthur Milani"
+  }
 }
 
 resource "aws_subnet" "app_1a" {
   vpc_id            = aws_vpc.main.id
   cidr_block        = "10.0.4.0/24"
   availability_zone = "us-east-1a"
-  tags              = { Name = "subnet-app-1a" }
+  tags = { 
+    Name = "subnet-app-1a"
+    Author = "Arthur Milani"
+  }
 }
 
 resource "aws_subnet" "app_1c" {
   vpc_id            = aws_vpc.main.id
   cidr_block        = "10.0.5.0/24"
   availability_zone = "us-east-1c"
-  tags              = { Name = "subnet-app-1c" }
+  tags = {
+    Name = "subnet-app-1c" 
+    Author = "Arthur Milani"
+  }
 }
 
 #Private DB A
@@ -93,6 +111,7 @@ resource "aws_subnet" "db_1a" {
 
   tags = {
     Name  = "subnet-db-1a"
+    Author = "Arthur Milani"
   }
 }
 
@@ -104,28 +123,41 @@ resource "aws_subnet" "db_1c" {
 
   tags = {
     Name  = "subnet-db-1c"
+    Author = "Arthur Milani"
   }
 }
 
 resource "aws_eip" "nat_1a" {
-  tags = { Name = "eip-nat-1a" }
+  tags = {
+    Name = "eip-nat-1a"
+    Author = "Arthur Milani"
+    }
 }
 
-resource "aws_eip" "nat_1c" {
-  tags = { Name = "eip-nat-1c" }
-}
+# resource "aws_eip" "nat_1c" {
+#   tags = {
+#     Name = "eip-nat-1c"
+#     Author = "Arthur Milani"
+#   }
+# }
 
 resource "aws_nat_gateway" "nat_1a" {
   allocation_id = aws_eip.nat_1a.id
   subnet_id     = aws_subnet.public_1a.id
-  tags          = { Name = "natgw-1a" }
+  tags          = {
+    Name = "natgw-1a"
+    Author = "Arthur Milani"
+    }
 }
 
-resource "aws_nat_gateway" "nat_1c" {
-  allocation_id = aws_eip.nat_1c.id
-  subnet_id     = aws_subnet.public_1c.id
-  tags          = { Name = "natgw-1c" }
-}
+# resource "aws_nat_gateway" "nat_1c" {
+#   allocation_id = aws_eip.nat_1c.id
+#   subnet_id     = aws_subnet.public_1c.id
+#   tags          = {
+#     Name = "natgw-1c"
+#     Author = "Arthur Milani"
+#     }
+# }
 
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.main.id
@@ -133,7 +165,10 @@ resource "aws_route_table" "public" {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.igw.id
   }
-  tags = { Name = "rt-public" }
+  tags = {
+    Name = "rt-public"
+    Author = "Arthur Milani"
+    }
 }
 
 resource "aws_route_table_association" "public_1a" {
@@ -152,7 +187,10 @@ resource "aws_route_table" "private" {
     cidr_block     = "0.0.0.0/0"
     nat_gateway_id = aws_nat_gateway.nat_1a.id
   }
-  tags = { Name = "rt-private" }
+  tags = {
+    Name = "rt-private"
+    Author = "Arthur Milani"
+  }
 }
 
 resource "aws_route_table_association" "app_1a" {
@@ -186,6 +224,7 @@ resource "aws_db_subnet_group" "rds_subnet_group" {
 
   tags = {
     Name = "rds-subnet-group"
+    Author = "Arthur Milani"
   }
 }
 
@@ -211,6 +250,7 @@ resource "aws_security_group" "rds_sg" {
 
   tags = {
     Name = "sg-rds"
+    Author = "Arthur Milani"
   }
 }
 
@@ -235,6 +275,7 @@ resource "aws_db_instance" "rds" {
     AMBIENTE  = "DEV"
     RESPONSAVEL = "arthur.giovanini@inmetrics.com.br"
     SCHEDULE = "online"
+    Author = "Arthur Milani"
   }
 }
 
@@ -281,16 +322,15 @@ module "eks" {
       create_iam_role = false
       iam_role_arn    = "arn:aws:iam::765732380112:role/EKSNodeGroupRole"
       
-
       tags = {
         Name  = "eks-nodegroup"
         AMBIENTE  = "DEV"
         RESPONSAVEL = "arthur.giovanini@inmetrics.com.br"
         CENTRODECUSTO = "ADMPLATDIGITAL"
         SCHEDULE = "online"
+        Author = "Arthur Milani"
       }
     }
-    
   }
 
   tags = {
@@ -299,18 +339,36 @@ module "eks" {
     RESPONSAVEL = "arthur.giovanini@inmetrics.com.br"
     CENTRODECUSTO = "ADMPLATDIGITAL"
     SCHEDULE = "online"
+    Author = "Arthur Milani"
   }
 }
 
+#Configuring the EKS Access for Nodes
 resource "aws_eks_access_entry" "cluster_access" {
   cluster_name      = module.eks.cluster_name
   principal_arn     = "arn:aws:iam::765732380112:role/aws-reserved/sso.amazonaws.com/AWSReservedSSO_Developer2_84263f1c06dd171d"
 }
 
-resource "aws_eks_access_policy_association" "example" {
+resource "aws_eks_access_policy_association" "cluster_access_policy" {
   cluster_name  = module.eks.cluster_name
   policy_arn    = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
   principal_arn = aws_eks_access_entry.cluster_access.principal_arn
+
+  access_scope {
+    type       = "cluster"
+  }
+}
+
+#Configuring the EKS Access for Azure Devops
+resource "aws_eks_access_entry" "azure_devops_access" {
+  cluster_name  = module.eks.cluster_name
+  principal_arn = "arn:aws:iam::765732380112:user/bot_azure-devops"
+}
+
+resource "aws_eks_access_policy_association" "azure_devops_access_policy" {
+  cluster_name  = module.eks.cluster_name
+  policy_arn    = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+  principal_arn = aws_eks_access_entry.azure_devops_access.principal_arn
 
   access_scope {
     type       = "cluster"
@@ -349,6 +407,7 @@ resource "aws_security_group" "bastion_sg" {
 
   tags = {
     Name  = "sg-bastion"
+    Author = "Arthur Milani"
   }
 }
 
@@ -378,6 +437,7 @@ EOF
     AMBIENTE  = "DEV"
     RESPONSAVEL = "arthur.giovanini@inmetrics.com.br"
     SCHEDULE = "online"
+    Author = "Arthur Milani"
   }
 }
 
@@ -403,42 +463,21 @@ resource "local_file" "db_secret_yaml" {
   depends_on = [aws_db_instance.rds]
 }
 
-# Creates the Flask Deployment
+resource "kubectl_manifest" "db_secret" {
+  yaml_body = local_file.db_secret_yaml.content
+  depends_on = [local_file.db_secret_yaml, aws_eks_access_policy_association.cluster_access_policy]
+}
+
+resource "kubectl_manifest" "flask_nginx_service" {
+  yaml_body = file("${path.module}/k8s/flask-nginx-service.yaml")
+  depends_on = [kubectl_manifest.db_secret]
+}
+
 resource "kubectl_manifest" "flask_deployment" {
   yaml_body = file("${path.module}/k8s/flask-app-deployment.yaml")
 
-  depends_on = [
-    module.eks,
-    kubectl_manifest.db_secret
-  ]
+  depends_on = [kubectl_manifest.flask_nginx_service]
 }
-
-resource "kubectl_manifest" "clients_service" {
-  yaml_body = file("${path.module}/k8s/clients-service.yaml")
-  # depends_on = [kubectl_manifest.flask_deployment]
-}
-
-resource "kubectl_manifest" "products_service" {
-  yaml_body = file("${path.module}/k8s/products-service.yaml")
-  # depends_on = [kubectl_manifest.flask_deployment]
-}
-
-resource "kubectl_manifest" "inventory_service" {
-  yaml_body = file("${path.module}/k8s/inventory-service.yaml")
-  # depends_on = [kubectl_manifest.flask_deployment]
-}
-
-resource "kubectl_manifest" "users_service" {
-  yaml_body = file("${path.module}/k8s/users-service.yaml")
-  # depends_on = [kubectl_manifest.flask_deployment]
-}
-
-resource "kubectl_manifest" "db_secret" {
-  yaml_body = local_file.db_secret_yaml.content
-  depends_on = [local_file.db_secret_yaml]
-}
-
-
 
 # OUTPUTS
 
@@ -448,4 +487,8 @@ output "cluster_name" {
 
 output "cluster_endpoint" {
   value = module.eks.cluster_endpoint
+}
+
+output "rds_endpoint" {
+  value = aws_db_instance.rds.address
 }
