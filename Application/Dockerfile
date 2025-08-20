@@ -13,8 +13,19 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copia todo o código da aplicação para o container
 COPY . .
 
-# Expõe as portas necessárias (ajuste se necessário)
-EXPOSE 5000 5001 5002 5003
+# Instala o NGINX
+RUN apt-get update && apt-get install -y nginx && \
+    rm -f /etc/nginx/sites-enabled/default && \
+    rm -rf /var/lib/apt/lists/*
+
+COPY nginx.conf /etc/nginx/sites-enabled/default
+
+# Script para iniciar NGINX e as APIs
+COPY start.sh .
+RUN chmod +x start.sh
+
+# Expõe as portas necessárias
+EXPOSE 80
 
 # Define o comando de execução padrão
-CMD ["python", "starter.py"]
+CMD ["./start.sh"]

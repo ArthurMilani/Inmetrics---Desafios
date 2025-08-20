@@ -16,11 +16,7 @@ spec:
         - name: flask-app
           image: arthurmilanigiovanini/flask-image:latest
           ports:
-            - containerPort: 5000
-            - containerPort: 5001
-            - containerPort: 5002
-            - containerPort: 5003
-
+            - containerPort: 80
           envFrom:
             - secretRef:
                 name: db-secret
